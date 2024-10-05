@@ -59,7 +59,7 @@ public class shootAllWeapons : MonoBehaviour
                     Quaternion initialRotation = weapon.transform.rotation;
 
                     Vector3 initialPosition = weapon.transform.position;
-                    Vector3 targetPosition = initialPosition + new Vector3(0, 2,0); //raises hight by y = +2.
+                    Vector3 targetPosition = initialPosition + new Vector3(0, 1,0); //raises hight by y = +1.
 
                     positionAndRotationCoroutines.Add(UpdateWeaponPositionAndRotation(weapon.transform, initialRotation, targetPosition, rb));
                 }
