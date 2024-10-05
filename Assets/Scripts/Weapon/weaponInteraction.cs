@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class weaponInteraction : MonoBehaviour
-{
-    //attached to weapon Object.
+{ 
     [SerializeField] private weaponSpawner spawner;
     [SerializeField] private weaponCollector collector;
 
     private void Start()
     {
-        //Refrence to other scripts, to use variables.
         spawner = FindObjectOfType<weaponSpawner>();
         collector = FindObjectOfType<weaponCollector>();
     }
@@ -27,11 +25,6 @@ public class weaponInteraction : MonoBehaviour
             {
                 collector.CollectWeapon(gameObject);
             }
-        }
-        else
-        {
-            //null check.
-            Debug.LogError("Refrence not found.");
         }
     }
 }

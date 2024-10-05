@@ -4,41 +4,42 @@ using UnityEngine;
 
 public class weaponSpawner : MonoBehaviour
 {
-
     public KeyCode spawnWeapon = KeyCode.Q;
     public GameObject[] weapons;
 
-    //Following weapons toggle.
+    //for determining if the weapons are childs to the player.
     public bool childToggle = false;
 
     public float weaponSpacing = 2.0f;
 
-
-    public float timeTillDestroy = 5.0f;
-
     public float cooldown = 7.0f;
     private float cdTime;
+
+    private weaponCollector collector;
+
+    void Start()
+    {
+        collector = FindObjectOfType<weaponCollector>();
+    }
 
     void Update()
     {
         if (Input.GetKeyDown(spawnWeapon) && Time.time >= cdTime)
         {
             SpawnWeapons();
+            Debug.Log("WEAPONS SPAWNED!");
             cdTime = Time.time + cooldown;
         }
     }
-
 
     void SpawnWeapons()
     {
         //null check.
         if (weapons.Length < 6)
         {
-            Debug.LogError("Assign 6 weapons in array");
+            Debug.LogError("Assign 6 weapons in the weapons array.");
             return;
         }
-
-
 
         //Spawning on the left.
         for (int i = 0; i < 3; i++)
@@ -49,13 +50,14 @@ public class weaponSpawner : MonoBehaviour
             if (childToggle)
             {
                 newWeapon.transform.SetParent(transform);
+
+                //collects weapons automatically.
+                if (collector != null)
+                {
+                    collector.CollectWeapon(newWeapon);
+                }
             }
-
-            Destroy(newWeapon, timeTillDestroy);
         }
-
-
-
 
         //Spawning on the right.
         for (int i = 3; i < 6; i++)
@@ -66,9 +68,13 @@ public class weaponSpawner : MonoBehaviour
             if (childToggle)
             {
                 newWeapon.transform.SetParent(transform);
-            }
 
-            Destroy(newWeapon, timeTillDestroy);
+                //collects weapons automatically.
+                if (collector != null)
+                {
+                    collector.CollectWeapon(newWeapon);
+                }
+            }
         }
     }
 }

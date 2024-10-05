@@ -8,7 +8,7 @@ public class weaponCollector : MonoBehaviour
     private const int maxWeapons = 2;
     private int currentWeapons = 0;
 
-    //Weapon Position.
+    //weapon Position.
     public Transform weaponOnLeft;
     public Transform weaponOnRight;
 
@@ -31,10 +31,13 @@ public class weaponCollector : MonoBehaviour
                 targetPosition = weaponOnRight.position;
             }
 
-            //Ensure its at weapon position.
-            weapon.transform.position = targetPosition + offset; 
+            //Sets weapon as child, then sets it to target position.
             weapon.transform.SetParent(transform);
-            weapon.transform.localPosition = Vector3.zero;
+            weapon.transform.position = targetPosition + offset;
+
+            // Optionally, reset rotation and scale if necessary.
+            weapon.transform.localRotation = Quaternion.identity;
+            weapon.transform.localScale = Vector3.one;
 
             currentWeapons++;
         }
@@ -54,6 +57,7 @@ public class weaponCollector : MonoBehaviour
             }
 
             currentWeapons--;
+            Debug.Log("YOU NOW HAVE: " + currentWeapons + "!");
         }
     }
 
