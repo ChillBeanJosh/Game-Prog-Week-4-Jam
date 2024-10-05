@@ -34,54 +34,53 @@ public class shootAllWeapons : MonoBehaviour
         }
     }
 
-    public float rotationSpeed; // Speed at which the weapon rotates
-    public float destructionDelay = 5f; // Time before the weapon is destroyed after being thrown
+    public float rotationSpeed; 
+    public float destructionDelay = 5f; 
 
-    private System.Collections.IEnumerator ShootAll()
+    public System.Collections.IEnumerator ShootAll()
     {
-        // Get all weapons in the scene with the "Weapon" tag.
         GameObject[] allWeapons = GameObject.FindGameObjectsWithTag("Weapon");
 
-        // List to store coroutines for raising and rotating weapons
         List<System.Collections.IEnumerator> positionAndRotationCoroutines = new List<System.Collections.IEnumerator>();
 
-        // Raise each weapon and update its rotation
         foreach (GameObject weapon in allWeapons)
         {
-            // If the weapon is not a child of the player 
-            if (!weapon.transform.IsChildOf(transform))
+            if (weapon == null)
             {
-                // Get Rigidbody reference to all those weapons
+                continue;
+            }
+            
+            if (!weapon.transform.IsChildOf(transform) && weapon != null)
+            {
                 Rigidbody rb = weapon.GetComponent<Rigidbody>();
 
                 if (rb != null)
                 {
-                    // Store the initial rotation
                     Quaternion initialRotation = weapon.transform.rotation;
 
-                    // Raise the weapon by 5 units and calculate the shoot direction
                     Vector3 initialPosition = weapon.transform.position;
-                    Vector3 targetPosition = initialPosition + new Vector3(0, 2,0);
+                    Vector3 targetPosition = initialPosition + new Vector3(0, 2,0); //raises hight by y = +2.
 
-                    // Start the position and rotation coroutine for this weapon
                     positionAndRotationCoroutines.Add(UpdateWeaponPositionAndRotation(weapon.transform, initialRotation, targetPosition, rb));
                 }
             }
         }
 
-        // Start all position and rotation coroutines simultaneously
         foreach (var rotationCoroutine in positionAndRotationCoroutines)
         {
             StartCoroutine(rotationCoroutine);
         }
 
-        // Allow time for all weapons to finish raising
-        yield return new WaitForSeconds(2.0f); // Adjust this if necessary for raising duration
+        //delay upon activation/key press.
+        yield return new WaitForSeconds(2.0f);
 
-        // Apply forces after all positions and rotations are set
         foreach (GameObject weapon in allWeapons)
         {
-            // If the weapon is not a child of the player 
+            if (weapon == null)
+            {
+                continue;
+            }
+
             if (!weapon.transform.IsChildOf(transform))
             {
                 Rigidbody rb = weapon.GetComponent<Rigidbody>();
@@ -95,24 +94,19 @@ public class shootAllWeapons : MonoBehaviour
                     }
                     else
                     {
-                        // Default direction if reticle is null
                         shootDirection = playerCamera.transform.forward;
                     }
 
-                    // Finalize the rotation before applying force
                     weapon.transform.rotation = Quaternion.LookRotation(shootDirection) * Quaternion.AngleAxis(90, Vector3.right);
 
-                    // Force for movement
                     rb.AddForce(shootDirection * throwForce, ForceMode.Impulse);
                     rb.AddTorque(Random.insideUnitSphere * 5f, ForceMode.Impulse);
 
-                    // Freeze unwanted rotations
                     rb.constraints = RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationX;
 
-                    // Delay between scene weapon thrown
-                    yield return new WaitForSeconds(0.001f); // You may adjust this delay if needed
+                    //delay between each projectile shot.
+                    yield return new WaitForSeconds(0.001f); 
 
-                    // Start coroutine to destroy the weapon after the specified delay
                     StartCoroutine(DestroyWeaponAfterDelay(weapon, destructionDelay));
                 }
             }
@@ -121,18 +115,21 @@ public class shootAllWeapons : MonoBehaviour
         yield return null;
     }
 
-    private System.Collections.IEnumerator UpdateWeaponPositionAndRotation(Transform weaponTransform, Quaternion initialRotation, Vector3 targetPosition, Rigidbody rb)
+    public System.Collections.IEnumerator UpdateWeaponPositionAndRotation(Transform weaponTransform, Quaternion initialRotation, Vector3 targetPosition, Rigidbody rb)
     {
-        float duration = 1.0f; // Duration for the upward motion
+        float duration = 1.0f;
         float elapsedTime = 0f;
 
-        // This loop raises the weapon and updates its rotation
         while (elapsedTime < duration)
         {
-            // Interpolate the weapon's position to move upwards
+
+            if (weaponTransform == null || weaponTransform.gameObject == null)
+            {
+                yield break;
+            }
+
             weaponTransform.position = Vector3.Lerp(weaponTransform.position, targetPosition, elapsedTime / duration);
 
-            // Update shoot direction based on reticle or camera
             Vector3 shootDirection;
 
             if (reticleTransform != null)
@@ -141,26 +138,32 @@ public class shootAllWeapons : MonoBehaviour
             }
             else
             {
-                // Default direction if reticle is null
                 shootDirection = playerCamera.transform.forward;
             }
 
-            // Calculate the target rotation to look at the shoot direction
             Quaternion targetRotation = Quaternion.LookRotation(shootDirection) * Quaternion.AngleAxis(90, Vector3.right);
 
-            // Use Slerp to smoothly rotate towards the target rotation
             weaponTransform.rotation = Quaternion.Slerp(weaponTransform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
 
             elapsedTime += Time.deltaTime;
-            yield return null; // Wait for the next frame
+            yield return null; 
         }
 
-        // Ensure the final position is set correctly
-        weaponTransform.position = targetPosition; // Ensure final position
-
-        // Keep updating direction until force is applied
-        while (true) // Keep updating direction
+        if (weaponTransform != null)
         {
+            weaponTransform.position = targetPosition;
+        }
+
+        //ensures direction is always updated.
+        while (true) 
+        {
+            if (weaponTransform == null || weaponTransform.gameObject == null)
+            {
+                yield break;
+            }
+            
+
+
             Vector3 shootDirection;
 
             if (reticleTransform != null)
@@ -169,25 +172,26 @@ public class shootAllWeapons : MonoBehaviour
             }
             else
             {
-                // Default direction if reticle is null
                 shootDirection = playerCamera.transform.forward;
             }
 
-            // Calculate the target rotation to look at the shoot direction
             Quaternion targetRotation = Quaternion.LookRotation(shootDirection) * Quaternion.AngleAxis(90, Vector3.right);
 
-            // Use Slerp to smoothly rotate towards the target rotation
             weaponTransform.rotation = Quaternion.Slerp(weaponTransform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
 
-            yield return null; // Wait for the next frame
+            yield return null; 
         }
     }
 
-    // Coroutine to destroy the weapon after a delay
-    private System.Collections.IEnumerator DestroyWeaponAfterDelay(GameObject weapon, float delay)
+    public System.Collections.IEnumerator DestroyWeaponAfterDelay(GameObject weapon, float delay)
     {
         yield return new WaitForSeconds(delay);
-        Destroy(weapon); // Destroy the weapon object
+
+        if (weapon != null)
+        {
+            Destroy(weapon);
+        }
+
     }
 }
     
