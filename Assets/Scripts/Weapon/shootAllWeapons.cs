@@ -17,6 +17,9 @@ public class shootAllWeapons : MonoBehaviour
     public Camera playerCamera;
     public Transform reticleTransform;
 
+    public Animator animator;
+
+
     private void Start()
     {
         collector = GetComponent<weaponCollector>();
@@ -72,6 +75,7 @@ public class shootAllWeapons : MonoBehaviour
         }
 
         //delay upon activation/key press.
+        animator.SetTrigger("Fire");
         yield return new WaitForSeconds(2.0f);
 
         foreach (GameObject weapon in allWeapons)

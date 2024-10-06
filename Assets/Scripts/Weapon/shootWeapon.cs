@@ -9,7 +9,10 @@ public class shootWeapon : MonoBehaviour
     private float nextThrowTime = 0f; 
 
     private weaponCollector collector; 
-    public Camera playerCamera; 
+    public Camera playerCamera;
+
+    public Animator animator;
+
 
     void Start()
     {
@@ -25,6 +28,8 @@ public class shootWeapon : MonoBehaviour
     {
         if (Input.GetKeyDown(throwKey) && Time.time >= nextThrowTime)
         {
+            animator.SetTrigger("Throw");
+
             ThrowPrefab();
         }
     }

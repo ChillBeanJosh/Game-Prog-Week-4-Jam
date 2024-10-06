@@ -61,7 +61,7 @@ public class weaponCollector : MonoBehaviour
 
             Quaternion targetRotation = Quaternion.LookRotation(shootDirection) * Quaternion.AngleAxis(90, Vector3.right);
             float elapsedTime = 0f;
-            float duration = 0.2f; 
+            float duration = 1.0f; 
 
             while (elapsedTime < duration)
             {
