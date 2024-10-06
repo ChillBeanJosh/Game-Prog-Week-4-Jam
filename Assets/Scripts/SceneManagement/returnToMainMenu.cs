@@ -13,6 +13,10 @@ public class returnToMainMenu : MonoBehaviour
     {
         if (Input.GetKeyDown(mainMenuKey))
         {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+
+
             sceneManager.Instance.LoadMainMenu();
         }
     }
