@@ -59,7 +59,7 @@ public class cameraOrientation : MonoBehaviour
             playerObject.forward = combatDirection.normalized;
 
         }
-        
+
     }
 
 }

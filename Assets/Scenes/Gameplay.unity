@@ -2350,6 +2350,37 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 55f94b3dfaaba26458dbf470efc8cfa4, type: 3}
+--- !u!1 &652144216
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 652144217}
+  m_Layer: 0
+  m_Name: Orientation
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &652144217
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 652144216}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1451365180}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &654524325
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3411,7 +3442,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ef061aa98df84b27aa9b072a08dfec6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  orientation: {fileID: 1931176185}
+  orientation: {fileID: 652144217}
   player: {fileID: 1451365180}
   playerObject: {fileID: 453633638}
   rb: {fileID: 1451365178}
@@ -4796,7 +4827,7 @@ MonoBehaviour:
   Ground:
     serializedVersion: 2
     m_Bits: 64
-  orientation: {fileID: 1451365180}
+  orientation: {fileID: 652144217}
   rayDistance: 1.5
   animator: {fileID: 453633640}
 --- !u!4 &1451365180
@@ -4816,6 +4847,7 @@ Transform:
   - {fileID: 1931176185}
   - {fileID: 1748768892}
   - {fileID: 2112833445}
+  - {fileID: 652144217}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1451365181
@@ -5198,7 +5230,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1526320727}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.38166144, y: 0.14772403, z: 0.06193512, w: 0.9103166}
+  m_LocalRotation: {x: -0.38166147, y: 0.147724, z: 0.061935116, w: 0.9103165}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
